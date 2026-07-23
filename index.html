@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Hat AI Quickstarts | Summit 2026 Edition</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --redhat-red: #EE0000;
+            --black: #0D0D0D;
+            --white: #FFFFFF;
+            --warm-white: #F5F3EE;
+            --electric: #FF4500;
+            --gray-text: #333333;
+            --light-gray: #F0F0F0;
+            --border-color: #E0E0E0;
+            
+            --font-bebas: 'Bebas Neue', display;
+            --font-playfair: 'Playfair Display', serif;
+            --font-mono: 'IBM Plex Mono', monospace;
+            --font-inter: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--black);
+            font-family: var(--font-inter);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- NEWSLETTER ADDITIONS --- */
+        .dispatch-header {
+            background-color: var(--white);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--redhat-red);
+        }
+
+        .dispatch-left h1 {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--redhat-red);
+            font-variant: all-small-caps;
+            letter-spacing: 2px;
+            margin-bottom: 2px;
+        }
+
+        .dispatch-left p, .dispatch-right p {
+            font-size: 12px;
+            color: #888;
+            font-family: var(--font-inter);
+        }
+
+        .editors-note {
+            background-color: var(--warm-white);
+            border-left: 4px solid var(--redhat-red);
+            padding: 3rem 2rem;
+            max-width: 680px;
+            margin: 80px auto 40px;
+        }
+
+        .editors-note .label {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--redhat-red);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: block;
+            font-weight: 600;
+        }
+
+        .editors-note blockquote {
+            font-family: var(--font-playfair);
+            font-size: 18px;
+            font-style: italic;
+            color: var(--gray-text);
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .editors-note .signature {
+            font-family: var(--font-inter);
+            font-size: 14px;
+            color: #666;
+        }
+
+        .marquee-container {
+            background-color: var(--black);
+            height: 48px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 40px;
+        }
+
+        .marquee-wrapper {
+            display: flex;
+            width: 200%;
+            animation: marquee 35s linear infinite;
+        }
+
+        .marquee-content {
+            display: flex;
+            white-space: nowrap;
+            width: 100%;
+        }
+
+        .marquee-item {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--white);
+            padding: 0 30px;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+
+        .marquee-item::after {
+            content: '●';
+            color: var(--redhat-red);
+            margin-left: 30px;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .deploy-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--light-gray);
+            color: var(--black);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            padding: 4px 10px;
+            border-radius: 100px;
+            font-weight: 500;
+            z-index: 5;
+        }
+
+        .built-for {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--redhat-red);
+            margin-bottom: 20px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .editorial-transition {
+            font-family: var(--font-playfair);
+            font-size: 22px;
+            font-style: italic;
+            color: var(--gray-text);
+            text-align: center;
+            margin: 6rem auto;
+            max-width: 700px;
+            line-height: 1.4;
+        }
+
+        /* --- UTILITIES --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 36px;
+            font-family: var(--font-bebas);
+            font-size: 1.35rem;
+            letter-spacing: 1px;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+            cursor: pointer;
+            border: none;
+            border-radius: 0; /* Sharp corners as requested */
+        }
+
+        .btn-primary {
+            background-color: var(--redhat-red);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--black);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(238, 0, 0, 0.2);
+        }
+
+        .btn-outline {
+            border: 2px solid var(--black);
+            color: var(--black);
+            margin-left: 10px;
+        }
+
+        .btn-outline:hover {
+            background-color: var(--black);
+            color: var(--white);
+        }
+
+        /* --- HERO SECTION --- */
+        #hero {
+            position: relative;
+            height: 90vh; /* Slightly shorter hero */
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            overflow: hidden;
+            background-color: var(--white);
+        }
+
+        .hero-stripe {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 45%;
+            height: 100%;
+            background-color: var(--redhat-red);
+            clip-path: polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%);
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 1000px;
+            text-align: left;
+            padding-left: 5%;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: var(--redhat-red);
+            color: white;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            padding: 8px 18px;
+            margin-bottom: 2rem;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        .hero-title {
+            font-family: var(--font-bebas);
+            font-size: clamp(4rem, 12vw, 8.5rem);
+            line-height: 0.85;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            color: var(--black);
+            word-spacing: 0.1em;
+        }
+
+        .hero-sub {
+            font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+            font-weight: 400;
+            margin-bottom: 3rem;
+            color: var(--gray-text);
+            max-width: 650px;
+        }
+
+        /* --- MISSION SECTION --- */
+        #mission {
+            padding: 120px 0;
+            background-color: var(--white);
+        }
+
+        .mission-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .mission-text h2 {
+            font-family: var(--font-bebas);
+            font-size: 4.5rem;
+            margin-bottom: 2.5rem;
+            line-height: 0.95;
+            text-transform: uppercase;
+        }
+
+        .mission-text p {
+            font-size: 1.25rem;
+            color: var(--gray-text);
+            margin-bottom: 2.5rem;
+            border-left: 5px solid var(--redhat-red);
+            padding-left: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .stat-card {
+            background: var(--warm-white);
+            padding: 40px 30px;
+            border-bottom: 4px solid var(--redhat-red);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: var(--white);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .stat-num {
+            display: block;
+            font-size: 3rem;
+            font-family: var(--font-bebas);
+            color: var(--black);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--redhat-red);
+            font-weight: 700;
+        }
+
+        /* --- FEATURED SECTION --- */
+        #featured {
+            padding: 140px 0;
+            background-color: var(--warm-white);
+        }
+
+        .featured-card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            border-left: 15px solid var(--redhat-red); /* Large red accent stripe */
+            position: relative;
+            padding: 100px 80px;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 80px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.04);
+        }
+
+        .summit-badge-featured {
+            display: inline-block;
+            background: var(--redhat-red);
+            color: white;
+            font-family: var(--font-mono);
+            font-weight: 700;
+            padding: 10px 20px;
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .featured-header h3 {
+            font-family: var(--font-playfair);
+            font-size: 1.8rem;
+            font-style: italic;
+            color: var(--gray-text);
+            margin-bottom: 1rem;
+        }
+
+        .featured-header h2 {
+            font-family: var(--font-bebas);
+            font-size: 5.5rem;
+            line-height: 0.9;
+            margin-bottom: 2rem;
+            color: var(--black);
+        }
+
+        .featured-desc {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            color: var(--gray-text);
+            line-height: 1.5;
+        }
+
+        .featured-tech {
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            background: var(--light-gray);
+            padding: 30px;
+            margin-bottom: 2rem;
+        }
+
+        .featured-tech strong { color: var(--redhat-red); border-bottom: 2px solid var(--redhat-red); padding-bottom: 4px; display: inline-block; margin-bottom: 15px; }
+
+        .featured-tech ul {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .featured-tech li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 12px;
+        }
+
+        .featured-tech li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--redhat-red);
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .featured-visual {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-left: 1px solid var(--border-color);
+            padding-left: 80px;
+        }
+
+        .featured-visual p {
+            font-size: 1.1rem;
+            color: var(--gray-text);
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        /* --- ALL QUICKSTARTS GRID --- */
+        #all-quickstarts {
+            padding: 140px 0;
+            background-color: var(--white);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 100px;
+        }
+
+        .section-header h2 {
+            font-family: var(--font-bebas);
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            color: var(--black);
+        }
+
+        .section-header p {
+            font-family: var(--font-playfair);
+            font-style: italic;
+            font-size: 1.8rem;
+            color: var(--gray-text);
+            opacity: 0.7;
+        }
+
+        .quickstarts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 40px;
+        }
+
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border-color);
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .card:hover {
+            border-color: transparent;
+            border-top: 4px solid var(--redhat-red);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+
+        /* Highlight Lemonade Card */
+        .card.highlight-lemon {
+            border-left: 4px solid #F5A623;
+        }
+
+        .card.highlight-lemon .summit-tag {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: var(--black);
+            color: var(--white);
+            padding: 2px 8px;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+        }
+
+        .card-header {
+            margin-bottom: 2rem;
+        }
+
+        .card-title {
+            font-family: var(--font-inter);
+            font-weight: 700;
+            font-size: 1.6rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            color: var(--black);
+        }
+
+        .card-desc {
+            font-size: 1rem;
+            color: var(--gray-text);
+            margin-bottom: 2.5rem;
+            flex: 1;
+            line-height: 1.6;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            border-top: 1px solid var(--border-color);
+            padding-top: 20px;
+        }
+
+        /* Industry Badges - New Pastel Style */
+        .industry-badge {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            padding: 5px 14px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .industry-enterprise { background: #FFE0E0; color: #CC0000; }
+        .industry-banking { background: #FFF3CD; color: #92680A; }
+        .industry-retail { background: #D0E8FF; color: #0D4E8A; }
+        .industry-healthcare { background: #D4EDDA; color: #1A6B35; }
+
+        .btn-text {
+            font-family: var(--font-bebas);
+            font-size: 1rem;
+            color: var(--redhat-red);
+            letter-spacing: 1px;
+        }
+
+        /* --- SUMMIT MOMENT - The Dark Section --- */
+        #summit-moment {
+            padding: 160px 0;
+            background-color: var(--black);
+            color: var(--white);
+        }
+
+        .moment-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .moment-header h2 {
+            font-family: var(--font-bebas);
+            font-size: 4.5rem;
+            margin-bottom: 3rem;
+            color: var(--redhat-red);
+        }
+
+        .pull-quote {
+            font-family: var(--font-playfair);
+            font-size: clamp(2.2rem, 6vw, 4.2rem);
+            line-height: 1.1;
+            margin-bottom: 5rem;
+            position: relative;
+            padding: 50px 0;
+            font-style: italic;
+        }
+
+        .pull-quote::before, .pull-quote::after {
+            content: '"';
+            font-size: 8rem;
+            color: var(--redhat-red);
+            font-family: var(--font-playfair);
+            position: absolute;
+            opacity: 0.5;
+        }
+
+        .pull-quote::before { top: -20px; left: -40px; }
+        .pull-quote::after { bottom: -60px; right: -20px; transform: rotate(180deg); }
+
+        .highlights-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-top: 80px;
+            text-align: left;
+        }
+
+        .highlight-item {
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 30px;
+        }
+
+        .highlight-item h4 {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            color: var(--redhat-red);
+            letter-spacing: 1px;
+        }
+
+        .highlight-item p {
+            color: rgba(255,255,255,0.7);
+            line-height: 1.6;
+        }
+
+        /* --- GET STARTED --- */
+        #get-started {
+            padding: 140px 0;
+            background-color: var(--white);
+            text-align: center;
+        }
+
+        .get-started-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin: 80px 0;
+        }
+
+        .step-item {
+            position: relative;
+            padding: 40px;
+            background: var(--warm-white);
+        }
+
+        .step-num {
+            font-family: var(--font-bebas);
+            font-size: 5rem;
+            color: var(--redhat-red);
+            margin-bottom: 1rem;
+            display: block;
+            line-height: 1;
+        }
+
+        .step-label {
+            font-family: var(--font-inter);
+            font-weight: 700;
+            font-size: 1.4rem;
+            text-transform: uppercase;
+            color: var(--black);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            padding: 100px 0;
+            background: var(--white);
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: var(--font-bebas);
+            font-size: 3rem;
+            color: var(--redhat-red);
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .footer-tagline {
+            font-family: var(--font-playfair);
+            font-style: italic;
+            font-size: 1.4rem;
+            margin-bottom: 4rem;
+            color: var(--gray-text);
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: var(--black);
+            text-decoration: none;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--redhat-red);
+        }
+
+        .summit-2026 {
+            color: var(--redhat-red);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            margin-top: 50px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .featured-card {
+                grid-template-columns: 1fr;
+                padding: 60px 40px;
+            }
+            .featured-visual {
+                padding-left: 0;
+                border-left: none;
+                border-top: 1px solid var(--border-color);
+                padding-top: 60px;
+            }
+            .mission-grid {
+                grid-template-columns: 1fr;
+                gap: 60px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .get-started-steps {
+                grid-template-columns: 1fr;
+            }
+            .highlights-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-title {
+                font-size: 4.5rem;
+            }
+            .mission-text h2 {
+                font-size: 3.5rem;
+            }
+            .featured-header h2 {
+                font-size: 3.5rem;
+            }
+            .hero-stripe {
+                display: none;
+            }
+            .hero-content {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- DISPATCH HEADER -->
+    <header class="dispatch-header">
+        <div class="dispatch-left">
+            <h1>AI QUICKSTARTS DISPATCH</h1>
+            <p>Issue #001 · May 2026 · Internal Newsletter</p>
+        </div>
+        <div class="dispatch-right">
+            <p>📍 Red Hat Summit 2026 · Atlanta, GA</p>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="hero">
+        <div class="hero-stripe"></div>
+        <div class="hero-content">
+            <span class="hero-badge reveal">LIVE AT RED HAT SUMMIT 2026</span>
+            <h1 class="hero-title reveal">THE FUTURE OF AI<br>IS ALREADY RUNNING</h1>
+            <p class="hero-sub reveal">Red Hat AI Quickstarts — From Zero to Production-Ready AI in Hours, Not Months.</p>
+            <div class="hero-btns reveal">
+                <a href="#featured" class="btn btn-primary">Explore the Quickstarts</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- EDITOR'S NOTE -->
+    <section class="container reveal">
+        <div class="editors-note">
+            <span class="label">FROM THE TEAM</span>
+            <blockquote>
+                "Hey Red Hatters — we built 17 production-ready AI use cases, 
+                demoed them live at Summit 2026 in Atlanta, and shipped them to 
+                docs.redhat.com in the same week. This is the story of what we built, 
+                why it matters, and what's coming next. Grab a coffee."
+            </blockquote>
+            <div class="signature">— The AI Quickstarts Core Team</div>
+        </div>
+    </section>
+
+    <!-- NEWS TICKER -->
+    <div class="marquee-container">
+        <div class="marquee-wrapper">
+            <div class="marquee-content">
+                <span class="marquee-item">17 QUICKSTARTS LIVE</span>
+                <span class="marquee-item">SUMMIT 2026 ATLANTA</span>
+                <span class="marquee-item">OPENSHIFT AI</span>
+                <span class="marquee-item">OPEN SOURCE</span>
+                <span class="marquee-item">LEMONADE STAND DEMOED ON STAGE</span>
+                <span class="marquee-item">29 COMMUNITY IDEAS IN PIPELINE</span>
+                <span class="marquee-item">DEPLOY IN HOURS NOT MONTHS</span>
+                <span class="marquee-item">AI OBSERVABILITY SUMMARIZER NOW AVAILABLE</span>
+            </div>
+            <div class="marquee-content">
+                <span class="marquee-item">17 QUICKSTARTS LIVE</span>
+                <span class="marquee-item">SUMMIT 2026 ATLANTA</span>
+                <span class="marquee-item">OPENSHIFT AI</span>
+                <span class="marquee-item">OPEN SOURCE</span>
+                <span class="marquee-item">LEMONADE STAND DEMOED ON STAGE</span>
+                <span class="marquee-item">29 COMMUNITY IDEAS IN PIPELINE</span>
+                <span class="marquee-item">DEPLOY IN HOURS NOT MONTHS</span>
+                <span class="marquee-item">AI OBSERVABILITY SUMMARIZER NOW AVAILABLE</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- MISSION SECTION -->
+    <section id="mission">
+        <div class="container">
+            <div class="mission-grid">
+                <div class="mission-text reveal">
+                    <h2 class="reveal">17 production-grade AI use cases. Built by experts. <span style="color: var(--redhat-red)">Deployable today.</span></h2>
+                    <p class="reveal">These are simple, focused AI examples designed for fast deployment on the Red Hat AI platform (OpenShift AI). They cover industries like Banking, Healthcare, Retail, and enterprise AI adoption — all open source, all battle-tested.</p>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card reveal">
+                        <span class="stat-num">17</span>
+                        <span class="stat-label">Quickstarts Ready</span>
+                    </div>
+                    <div class="stat-card reveal" style="transition-delay: 0.1s;">
+                        <span class="stat-num">04</span>
+                        <span class="stat-label">Key Industries</span>
+                    </div>
+                    <div class="stat-card reveal" style="transition-delay: 0.2s;">
+                        <span class="stat-num">1</span>
+                        <span class="stat-label">Platform (OpenShift AI)</span>
+                    </div>
+                    <div class="stat-card reveal" style="transition-delay: 0.3s;">
+                        <span class="stat-num" style="color: var(--redhat-red)">SUMMIT</span>
+                        <span class="stat-label">Deployed at 2026</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURED CARD (SUMMIT SPOTLIGHT) -->
+    <section id="featured">
+        <div class="container">
+            <div class="featured-card reveal">
+                <span class="summit-badge-featured">⭐ SUMMIT 2026 FEATURED</span>
+                <div class="featured-content">
+                    <div class="featured-header">
+                        <h3>Lemonade Stand Assistant + Guardrails</h3>
+                        <h2>AI that serves customers — safely, every time.</h2>
+                    </div>
+                    <p class="featured-desc">Showcased live on the Red Hat Summit 2026 stage, the Lemonade Stand Assistant demonstrates how to deploy a production-ready AI customer service chatbot with enterprise-grade safety guardrails baked in.</p>
+                    
+                    <div class="featured-tech">
+                        <strong>CORE CAPABILITIES</strong>
+                        <ul>
+                            <li>Deploys an AI-powered customer service assistant on OpenShift AI</li>
+                            <li>Enforces family-friendly, policy-compliant interactions via guardrails</li>
+                            <li>Shows how guardrails integrate with real LLM deployments as a first-class feature</li>
+                            <li>Demonstrates responsible AI patterns that scale to any enterprise use case</li>
+                        </ul>
+                    </div>
+
+                    <a href="https://docs.redhat.com/en/learn/ai-quickstarts/rh-lemonade-stand-assistant" target="_blank" class="btn btn-primary">View Documentation</a>
+                </div>
+                <div class="featured-visual">
+                    <span class="industry-tag" style="margin-bottom: 20px; font-weight: 800; color: var(--redhat-red);">Industry: Retail</span>
+                    <p>Before you deploy AI in banking, healthcare, or retail — you need to know your model won't go off-script. The Lemonade Stand shows exactly how to build that safety layer, in a way any engineer can understand and replicate.</p>
+                    <div style="background: var(--light-gray); padding: 25px; font-family: var(--font-mono); font-size: 0.85rem; border-left: 4px solid var(--black);">
+                        <code style="color: var(--redhat-red);">// security-policy.yaml</code><br>
+                        <code>guardrails:<br>&nbsp;&nbsp;pii_detection: true<br>&nbsp;&nbsp;sentiment_analysis: active</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ALL QUICKSTARTS GRID -->
+    <section id="all-quickstarts">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Every Quickstart. Ready to Deploy.</h2>
+                <p>17 production-grade AI use cases across banking, healthcare, retail, and enterprise AI adoption.</p>
+            </div>
+
+            <div class="quickstarts-grid" id="main-grid">
+                <!-- Cards will be populated here -->
+            </div>
+        </div>
+    </section>
+
+    <div class="container editorial-transition reveal">
+        "But 17 quickstarts is just the start. The community is already building what comes next."
+    </div>
+
+    <!-- SUMMIT MOMENT -->
+    <section id="summit-moment">
+        <div class="container">
+            <div class="moment-content reveal">
+                <div class="moment-header">
+                    <h2>As Seen at Red Hat Summit 2026</h2>
+                </div>
+                <blockquote class="pull-quote">
+                    Red Hat wants to enable organizations to deploy any model, on any accelerator, across any cloud — all powered by open source.
+                </blockquote>
+                <p style="font-size: 1.4rem; color: rgba(255,255,255,0.7); max-width: 850px; margin: 0 auto 60px;">Red Hat unveiled a bold vision at Summit 2026 — AI Quickstarts were front and center, with the Lemonade Stand Assistant demoed live on stage to show how guardrails make AI safe for any enterprise.</p>
+                
+                <div class="highlights-grid">
+                    <div class="highlight-item">
+                        <h4>Red Hat AI Inference Server</h4>
+                        <p>Built on the vLLM community, providing a standardized, high-performance way to serve any model on open infrastructure.</p>
+                    </div>
+                    <div class="highlight-item">
+                        <h4>Model Context Protocol (MCP)</h4>
+                        <p>Leveraging open standards for building intelligent agents that connect to real-world enterprise data with precision.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container editorial-transition reveal">
+        "Inspired? Good. The next quickstart could be yours."
+    </div>
+
+    <!-- GET STARTED -->
+    <section id="get-started">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2 style="font-size: 3.5rem;">Your AI Journey Starts With One Quickstart</h2>
+            </div>
+            
+            <div class="get-started-steps">
+                <div class="step-item reveal">
+                    <span class="step-num">01</span>
+                    <span class="step-label">Pick a use case</span>
+                </div>
+                <div class="step-item reveal" style="transition-delay: 0.1s;">
+                    <span class="step-num">02</span>
+                    <span class="step-label">Deploy on OpenShift AI</span>
+                </div>
+                <div class="step-item reveal" style="transition-delay: 0.2s;">
+                    <span class="step-num">03</span>
+                    <span class="step-label">Ship to production</span>
+                </div>
+            </div>
+
+            <div class="reveal">
+                <a href="https://docs.redhat.com/en/learn/ai-quickstarts" target="_blank" class="btn btn-primary">Browse All Quickstarts →</a>
+                <a href="https://github.com/rh-ai-quickstart" target="_blank" class="btn btn-outline">View on GitHub →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo">RED HAT</div>
+            <p class="footer-tagline">AI Quickstarts — Built by Red Hatters, for the Enterprise</p>
+            
+            <div class="footer-links">
+                <a href="https://docs.redhat.com/en/learn/ai-quickstarts">Documentation</a>
+                <a href="https://github.com/rh-ai-quickstart">GitHub</a>
+                <a href="#">Red Hat AI</a>
+                <a href="#">Security Updates</a>
+            </div>
+
+            <div class="summit-2026">
+                RED HAT SUMMIT 2026 | ATLANTA, MAY 11–14, 2026
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- DATA ---
+        const quickstarts = [
+            {
+                title: "Enterprise RAG Chatbot",
+                industry: "Enterprise",
+                desc: "Got a SharePoint full of docs nobody reads? Turn it into a chatbot your team actually uses — trained on your data, deployed on your infra.",
+                builtFor: "Knowledge Management Teams",
+                deployTime: "⚡ ~45 min",
+                docs: "https://docs.redhat.com/en/learn/ai-quickstarts/rh-RAG"
+            },
+            {
+                title: "AI Observability Summarizer",
+                industry: "Enterprise",
+                desc: "Stop jumping between Prometheus dashboards. Ask 'why is latency spiking?' in plain English and get an actual answer — not a graph.",
+                builtFor: "SRE & Platform Teams",
+                deployTime: "⚡ ~1 hour",
+                docs: "https://docs.redhat.com/en/learn/ai-quickstarts/rh-openshift-ai-observability-summarizer"
+            },
+            {
+                title: "AI-Powered Virtual Agent",
+                industry: "Enterprise",
+                desc: "Replace your tier-1 support queue with an AI that never sleeps, never transfers, and never says 'have you tried turning it off and on again?'",
+                builtFor: "Customer Experience Teams",
+                deployTime: "⚡ ~1 hour",
+                docs: "https://docs.redhat.com/en/learn/ai-quickstarts/rh-ai-virtual-agent"
+            },
+            {
+                title: "AML Investigation with RAG + NVIDIA",
+                industry: "Banking",
+                desc: "AML investigations that used to take days now surface in minutes — with an audit trail your compliance team will actually trust.",
+                builtFor: "Financial Crime & Compliance Teams",
+                deployTime: "⚡ ~2 hours",
+                docs: "https://docs.redhat.com/en/learn/ai-quickstarts/rh-aml-rag-nvidia"
+            },
+            {
+                title: "Ansible Log Analysis",
+                industry: "Enterprise",
+                desc: "Your Ansible jobs fail at 2am. This AI agent identifies the error, routes it to the right person, and suggests the fix — before you even wake up.",
+                builtFor: "Automation & Ops Engineers",
+                deployTime: "⚡ ~30 min",
+                docs: "https://docs.redhat.com/en/learn/ai-quickstarts/rh-ansible-log-analysis"
+            },
+            {
+                title: "Retail AI Analytics + Data Governance",
+                industry: "Retail",
+                desc: "Natural language loyalty analytics with policy guardrails built in. Your data team gets speed. Your legal team gets to sleep.",
+                builtFor: "Retail Data & Analytics Teams",
+                deployTime: "⚡ ~1 hour",
+                docs: "https://docs.redhat.com/en/learn/ai-quickstarts/rh-data-governance-co-pilot"
+            },
+            {
+                title: "F5 AI Guardrails (Prompt Security)",
+                industry: "Banking",
+                desc: "Prompt injection is the SQL injection of the AI era. This stops it — enterprise-grade, deployed on OpenShift, no excuses.",
+                builtFor: "Security & AppSec Engineers",
+                deployTime: "⚡ ~45 min",
+                docs: "https://docs.redhat.com/en/learn/ai-quickstarts/rh-f5-ai-guardrails"
+            },
+            {
+                title: "F5 Distributed Cloud API Security",
+                industry: "Banking",
+                desc: "You can't let shadow APIs and injection attacks compromise your AI-powered finance apps. This closes that gap, fast.",
+                builtFor: "API & Platform Security Teams",
+                deployTime: "⚡ ~45 min",
+                docs: "https://docs.redhat.com/en/learn/ai-quickstarts/rh-f5-api-security"
+            },
+            {
+                title: "Privacy-Focused Healthcare AI Assistant",
+                industry: "Healthcare",
+                desc: "HIPAA compliance isn't optional. This LLM ships with PII detection and content moderation baked in — not bolted on afterward.",
+                builtFor: "Healthcare IT & Compliance Teams",
+                deployTime: "⚡ ~1 hour",
+                docs: "https://docs.redhat.com/en/learn/ai-quickstarts/rh-guardrailing-llms"
+            },
+            {
+                title: "IT Self-Service Agent (Laptop Refresh)",
+                industry: "Enterprise",
+                desc: "Cut your IT ticket volume by letting AI handle the laptop refresh workflow. Your service desk will thank you.",
+                builtFor: "IT Service Management Teams",
+                deployTime: "⚡ ~30 min",
+                docs: "https://docs.redhat.com/en/learn/ai-quickstarts/rh-it-self-service-agent"
+            },
+            {
+                title: "Lemonade Stand Assistant + Guardrails",
+                industry: "Retail",
+                desc: "Deceptively simple demo, dead serious tech. The pattern that keeps your customer-facing AI on-script — in retail, banking, or anywhere.",
+                builtFor: "Any Team Deploying Customer-Facing AI",
+                deployTime: "⚡ ~20 min",
+                highlightLemon: true
+            },
+            {
+                title: "CPU-Based HR Assistant",
+                industry: "Banking",
+                desc: "No GPU? No problem. Deploy a policy Q&A assistant that runs on plain CPUs — perfect for cost-sensitive environments.",
+                builtFor: "HR & People Ops Teams",
+                deployTime: "⚡ ~20 min",
+                docs: "https://docs.redhat.com/en/learn/ai-quickstarts/rh-llm-cpu-serving"
+            },
+            {
+                title: "Financial Audit AI (LLM Observability)",
+                industry: "Banking",
+                desc: "Real-time visibility into what your LLMs cost, how they perform, and whether they're behaving — because your auditors will ask.",
+                builtFor: "FinOps & Compliance Teams",
+                deployTime: "⚡ ~45 min",
+                docs: "https://docs.redhat.com/en/learn/ai-quickstarts/rh-lls-observability"
+            },
+            {
+                title: "NVIDIA MaaS Code Assistant",
+                industry: "Enterprise",
+                desc: "Private GitHub Copilot vibes, but on your own infra with NVIDIA Nemotron. No data leaves your environment.",
+                builtFor: "Platform & Developer Experience Teams",
+                deployTime: "⚡ ~1.5 hours",
+                docs: "https://docs.redhat.com/en/learn/ai-quickstarts/rh-maas-code-assistant"
+            },
+            {
+                title: "Multi-Agent Mortgage Lending",
+                industry: "Banking",
+                desc: "From prospect inquiry to underwriting approval — orchestrated by AI agents that hand off to each other like a real team.",
+                builtFor: "Financial Services & Lending Teams",
+                deployTime: "⚡ ~2 hours",
+                docs: "https://docs.redhat.com/en/learn/ai-quickstarts/rh-multi-agent-loan-origination"
+            },
+            {
+                title: "AI Product Recommender",
+                industry: "Retail",
+                desc: "Personalized recommendations and AI-generated review summaries, shipped into your e-commerce storefront in an afternoon.",
+                builtFor: "Retail & E-commerce Engineering Teams",
+                deployTime: "⚡ ~1 hour",
+                docs: "https://docs.redhat.com/en/learn/ai-quickstarts/rh-product-recommender-system"
+            },
+            {
+                title: "Spending Anomaly Detection",
+                industry: "Banking",
+                desc: "Write fraud rules in plain English like 'flag anything over $5K from a new vendor' and watch it just work. No SQL required.",
+                builtFor: "Fraud & Risk Management Teams",
+                deployTime: "⚡ ~45 min",
+                docs: "https://docs.redhat.com/en/learn/ai-quickstarts/rh-spending-transaction-monitor"
+            }
+        ];
+
+        // --- RENDER GRID ---
+        const grid = document.getElementById('main-grid');
+        quickstarts.forEach(qs => {
+            const card = document.createElement('a');
+            card.href = qs.docs;
+            card.target = "_blank";
+            
+            let classes = "card reveal";
+            if (qs.highlightObs) classes += " highlight-obs";
+            if (qs.highlightLemon) classes += " highlight-lemon";
+            card.className = classes;
+            
+            const industryClass = `industry-${qs.industry.toLowerCase()}`;
+            
+            card.innerHTML = `
+                <div class="deploy-badge">${qs.deployTime}</div>
+                <div class="card-header">
+                    <span class="industry-badge ${industryClass}">${qs.industry}</span>
+                    ${qs.highlightLemon ? '<span class="summit-tag">⭐ SUMMIT 2026 FEATURED</span>' : ''}
+                </div>
+                <h4 class="card-title">${qs.title}</h4>
+                <p class="card-desc">${qs.desc}</p>
+                <div class="built-for">BUILT FOR: ${qs.builtFor}</div>
+                <div class="card-footer">
+                    <span class="btn-text">READ DOCS</span>
+                    <span style="color: var(--redhat-red); font-weight: 900;">→</span>
+                </div>
+            `;
+            grid.appendChild(card);
+        });
+
+        // --- REVEAL ON SCROLL ---
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.15 });
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            revealObserver.observe(el);
+        });
+    </script>
+</body>
+</html>

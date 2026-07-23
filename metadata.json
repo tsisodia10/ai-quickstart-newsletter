@@ -1,0 +1,6 @@
+{
+  "name": "Red Hat AI Quickstarts Newsletter",
+  "description": "A visually stunning, editorial-style newsletter for Red Hat's AI Quickstarts initiative launched at Red Hat Summit 2026.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
